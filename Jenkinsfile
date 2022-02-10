@@ -2,7 +2,7 @@ pipeline {
     environment {
         GOPATH = "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
     }
-    agent { docker { image 'golang:1.16-alpine' } }
+    agent { dockerfile true }
     stages {        
         stage('Test') {
             steps {
