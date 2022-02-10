@@ -8,6 +8,7 @@ pipeline {
             steps {
                 withEnv(["PATH+GO=${GOPATH}/bin"]){
                     echo 'Running test'
+                    sh 'go mod download'
                     sh 'go version'
                     sh 'go test -v'
                 }
