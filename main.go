@@ -1,7 +1,10 @@
 package main
 
-import "golang-service/utils"
+import (
+	"fmt"
+	"golang-service/utils"
+)
 
 func main() {
-	utils.Total()
+	fmt.Print(utils.Total(1, 2))
 }
