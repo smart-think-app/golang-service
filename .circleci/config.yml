@@ -1,0 +1,27 @@
+version: 2.1
+orbs:
+  doctl: digitalocean/cli@0.1.1
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/golang:1.16
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
+      - run:
+          name: build docker
+          command:  |
+            docker build --tag tqhuy1996developer/go-service-hello-world .
+            docker push tqhuy1996developer/go-service-hello-world
+      - doctl/install
+      - run:
+          name: Deploy k8s Digital Ocean
+          command:  |
+            doctl kubernetes cluster kubeconfig save 2c09a317-88ea-452a-a562-e419ea865f2f
+workflows:
+  build_and_deploy:
+    jobs:
+      - build
