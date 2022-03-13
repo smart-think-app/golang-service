@@ -28,6 +28,7 @@ jobs:
           name: Deploy k8s Digital Ocean
           command:  |
             doctl kubernetes cluster kubeconfig save 2c09a317-88ea-452a-a562-e419ea865f2f
+            doctl k8s apply -f deployment.yml
 workflows:
   build_and_deploy:
     jobs:
