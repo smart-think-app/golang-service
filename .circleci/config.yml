@@ -17,9 +17,13 @@ jobs:
             docker build --tag tqhuy1996developer/go-service-hello-world .
             docker login -u tqhuy1996developer -p 2abca984-516c-4c68-8fb3-9891b18edc96
             docker push tqhuy1996developer/go-service-hello-world
+      - run:
+          name: init env
+          command:  |
+            echo 'export DO_ACCESS_TOKEN=08e49ce135b2da0b47fc5225acb993f8251524f9f4b8d99d0f6aa685e231439d' >> $BASH_ENV && source $BASH_ENV
       - doctl/install
       - doctl/initialize:
-          digitalocean-access-token:  08e49ce135b2da0b47fc5225acb993f8251524f9f4b8d99d0f6aa685e231439d
+          digitalocean-access-token:  DO_ACCESS_TOKEN
       - run:
           name: Deploy k8s Digital Ocean
           command:  |
