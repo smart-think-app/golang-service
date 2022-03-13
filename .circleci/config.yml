@@ -15,6 +15,7 @@ jobs:
           name: build docker
           command:  |
             docker build --tag tqhuy1996developer/go-service-hello-world .
+            docker login -u tqhuy1996developer -p 2abca984-516c-4c68-8fb3-9891b18edc96
             docker push tqhuy1996developer/go-service-hello-world
       - doctl/install
       - run:
