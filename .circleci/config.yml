@@ -69,7 +69,9 @@ jobs:
           name: aws
           command:  |
             export TASK_ID=$(aws ecs list-tasks --cluster demo-ecs | jq '.taskArns | .[0]')
-            aws ecs stop-task --cluster demo-ecs --task $TASK_ID
+            export TASK_ID_2=${TASK_ID: 50:32}
+            aws ecs stop-task --cluster demo-ecs --task $TASK_ID_2
+            aws ecs run-task --task-definition go-docker:1 --cluster demo-ecs
 workflows:
   build_and_deploy:
     jobs:
