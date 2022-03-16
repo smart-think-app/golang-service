@@ -40,7 +40,7 @@
 # AWS ECS
 version: 2.1
 orbs:
-  aws-ecs: circleci/aws-ecs@0x.y.z
+  aws-ecs: circleci/aws-ecs@2.0.0
   aws-cli: circleci/aws-cli@2.0
 jobs:
   build:
@@ -65,7 +65,7 @@ jobs:
             docker build --tag tqhuy1996developer/go-service-hello-world .
             docker login -u tqhuy1996developer -p 2abca984-516c-4c68-8fb3-9891b18edc96
             docker push tqhuy1996developer/go-service-hello-world
-      - aws-ecs/deploy-service-update:
+  - aws-ecs/deploy-service-update:
           family: "go-docker"
           cluster-name: "demo-ecs"
           container-image-name-updates: "container=tqhuy1996developer/go-service-hello-world,tag=latest"
