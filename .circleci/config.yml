@@ -65,11 +65,10 @@ jobs:
             docker build --tag tqhuy1996developer/go-service-hello-world .
             docker login -u tqhuy1996developer -p 2abca984-516c-4c68-8fb3-9891b18edc96
             docker push tqhuy1996developer/go-service-hello-world
-      - aws-ecs/run-task:
-          awsvpc: false
-          cluster: demo-ecs
-          launch-type: EC2
-          task-definition: go-docker:1
+      - aws-ecs/deploy-service-update:
+          family: "go-docker"
+          cluster-name: "demo-ecs"
+          container-image-name-updates: "container=tqhuy1996developer/go-service-hello-world,tag=latest"
 workflows:
   build_and_deploy:
     jobs:
