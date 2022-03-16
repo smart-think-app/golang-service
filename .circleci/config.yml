@@ -58,7 +58,7 @@ jobs:
           command:  |
             echo 'export AWS_ACCESS_KEY_ID=AKIA4BN5DNHYEERU6564' >> $BASH_ENV && source $BASH_ENV
             echo 'export AWS_SECRET_ACCESS_KEY=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' >> $BASH_ENV && source $BASH_ENV
-            echo 'export AWS_DEFAULT_REGION=us-east1' >> $BASH_ENV && source $BASH_ENV
+            echo 'export AWS_DEFAULT_REGION=us-east-1' >> $BASH_ENV && source $BASH_ENV
       - run:
           name: build docker
           command:  |
