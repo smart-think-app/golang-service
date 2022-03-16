@@ -65,6 +65,11 @@ jobs:
             docker build --tag tqhuy1996developer/go-service-hello-world .
             docker login -u tqhuy1996developer -p 2abca984-516c-4c68-8fb3-9891b18edc96
             docker push tqhuy1996developer/go-service-hello-world
+      - run:
+          name: aws
+          command:  |
+            export TASK_ID=$(aws ecs list-tasks --cluster demo-ecs | jq '.taskArns | .[0]')
+            aws ecs stop-task --cluster demo-ecs --task $TASK_ID
 workflows:
   build_and_deploy:
     jobs:
