@@ -74,16 +74,14 @@
 #   build_and_deploy:
 #     jobs:
 #       - build
-version: 2.1
+version: '2.1'
 orbs:
-  aws-ecr: circleci/aws-ecr@x.y.z
-  aws-ecs: circleci/aws-ecs@0x.y.z
+  aws-ecr: circleci/aws-ecr@6.15
+  aws-ecs: circleci/aws-ecs@2.0.0
 workflows:
   build-and-deploy:
     jobs:
       - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build-and-push-image # only run this job once aws-ecr/build-and-push-image has completed
-          family: "go-docker"
-          cluster-name: "demo-ecs"
-          container-image-name-updates: "container=tqhuy1996developer/go-service-hello-world,tag=latest"
+          cluster-name: 'demo-ecs'
+          container-image-name-updates: 'container=tqhuy1996developer/go-service-hello-world,tag=latest'
+          family: 'go-docker'
