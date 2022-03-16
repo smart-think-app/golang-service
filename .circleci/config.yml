@@ -38,39 +38,49 @@
 #       - build
 
 # AWS ECS
-version: 2.1
-orbs:
-  aws-ecs: circleci/aws-ecs@2.0.0
-  aws-cli: circleci/aws-cli@2.0
-jobs:
-  build:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/golang:1.16
-    steps:
-      - checkout
-      - aws-cli/setup
-      - setup_remote_docker:
-          version: 19.03.13
-          docker_layer_caching: true
-      - run:
-          name: setup env aws
-          command:  |
-            echo 'export AWS_ACCESS_KEY_ID=AKIA4BN5DNHYEERU6564' >> $BASH_ENV && source $BASH_ENV
-            echo 'export AWS_SECRET_ACCESS_KEY=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' >> $BASH_ENV && source $BASH_ENV
-            echo 'export AWS_DEFAULT_REGION=us-east-1' >> $BASH_ENV && source $BASH_ENV
-      - run:
-          name: build docker
-          command:  |
-            docker build --tag tqhuy1996developer/go-service-hello-world .
-            docker login -u tqhuy1996developer -p 2abca984-516c-4c68-8fb3-9891b18edc96
-            docker push tqhuy1996developer/go-service-hello-world
-      - aws-ecs/deploy-service-update:
-              family: "go-docker"
-              cluster-name: "demo-ecs"
-              container-image-name-updates: "container=tqhuy1996developer/go-service-hello-world,tag=latest"
+# version: 2.1
+# orbs:
+#   aws-ecs: circleci/aws-ecs@2.0.0
+#   aws-cli: circleci/aws-cli@2.0
+# jobs:
+#   build:
+#     working_directory: ~/repo
+#     docker:
+#       - image: circleci/golang:1.16
+#     steps:
+#       - checkout
+#       - aws-cli/setup
+#       - setup_remote_docker:
+#           version: 19.03.13
+#           docker_layer_caching: true
+#       - run:
+#           name: setup env aws
+#           command:  |
+#             echo 'export AWS_ACCESS_KEY_ID=AKIA4BN5DNHYEERU6564' >> $BASH_ENV && source $BASH_ENV
+#             echo 'export AWS_SECRET_ACCESS_KEY=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' >> $BASH_ENV && source $BASH_ENV
+#             echo 'export AWS_DEFAULT_REGION=us-east-1' >> $BASH_ENV && source $BASH_ENV
+#       - run:
+#           name: build docker
+#           command:  |
+#             docker build --tag tqhuy1996developer/go-service-hello-world .
+#             docker login -u tqhuy1996developer -p 2abca984-516c-4c68-8fb3-9891b18edc96
+#             docker push tqhuy1996developer/go-service-hello-world
+#   deploy:
+#     - aws-ecs/deploy-service-update:
+#         family: "go-docker"
+#         cluster-name: "demo-ecs"
+#         container-image-name-updates: "container=tqhuy1996developer/go-service-hello-world,tag=latest"
+# workflows:
+#   build_and_deploy:
+#     jobs:
+#       - build
+
 workflows:
-  build_and_deploy:
+  build-and-deploy:
     jobs:
-      - build
-      
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image # only run this job once aws-ecr/build-and-push-image has completed
+          family: "go-docker"
+          cluster-name: "demo-ecs"
+          container-image-name-updates: "container=tqhuy1996developer/go-service-hello-world,tag=latest"
