@@ -19,6 +19,7 @@ jobs:
             echo 'export AWS_ACCESS_KEY_ID=AKIA4BN5DNHYEERU6564' >> $BASH_ENV && source $BASH_ENV
             echo 'export AWS_SECRET_ACCESS_KEY=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' >> $BASH_ENV && source $BASH_ENV
             echo 'export AWS_DEFAULT_REGION=us-east-1' >> $BASH_ENV && source $BASH_ENV
+            echo 'export ECS_CLUSTER=demo-ecs-huy' >> $BASH_ENV && source $BASH_ENV
       - run:
           name: build docker
           command:  |
@@ -28,10 +29,10 @@ jobs:
       - run:
           name: aws
           command:  |
-            export TASK_ID=$(aws ecs list-tasks --cluster demo-ecs | jq '.taskArns | .[0]')
+            export TASK_ID=$(aws ecs list-tasks --cluster $ECS_CLUSTER | jq '.taskArns | .[0]')
             export TASK_ID_2=${TASK_ID: 50:32}
-            aws ecs stop-task --cluster demo-ecs --task $TASK_ID_2
-            aws ecs run-task --task-definition go-docker:1 --cluster demo-ecs
+            aws ecs stop-task --cluster $ECS_CLUSTER --task $TASK_ID_2
+            aws ecs run-task --task-definition go-docker:1 --cluster $ECS_CLUSTER
 workflows:
   build_and_deploy:
     jobs:
