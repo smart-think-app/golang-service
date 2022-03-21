@@ -23,5 +23,5 @@ func main() {
 
 // Handler
 func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World - AWS - ECS! version 4.0 ")
+	return c.String(http.StatusOK, "Hello, World - Cloud Run! version 4.0 ")
 }
